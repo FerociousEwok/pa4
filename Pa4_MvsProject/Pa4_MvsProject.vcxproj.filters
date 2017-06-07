@@ -15,7 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.c">
+    <ClInclude Include="minPQ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="adjWgtVec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loadGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="minPQ.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="adjWgtVec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadGraph.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

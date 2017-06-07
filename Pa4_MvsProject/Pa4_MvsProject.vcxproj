@@ -110,7 +110,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.c" />
+    <ClInclude Include="adjWgtVec.h" />
+    <ClInclude Include="loadGraph.h" />
+    <ClInclude Include="minPQ.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="adjWgtVec.c" />
+    <ClCompile Include="loadGraph.c" />
+    <ClCompile Include="minPQ.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

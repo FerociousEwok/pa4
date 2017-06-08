@@ -21,7 +21,10 @@
     <ClInclude Include="adjWgtVec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="loadGraph.h">
+    <ClInclude Include="greedy04.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loadWgtGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,7 +35,10 @@
     <ClCompile Include="adjWgtVec.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="loadGraph.c">
+    <ClCompile Include="greedy04.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadWgtGraph.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "intVec.h"
-#include "loadGraph.h"
+#include "adjWgtVec.h"//adWgtVec.h instead when its done
+#include "loadWgtGraph.h"
 /*
 loadGraph.c
 Ben Donn
 bdonn
 pa4
-ToDo: replace IntVec type with AdjWgtVecNode type
+ToDo: replace AdjWgtVec type with AdjWgtVecNode type
 */
 int globalEdgeCount = 0;
+/*
 
-int** makeAdjMatrix(IntVec *adjList, int nodeCount)
+int** makeAdjMatrix(AdjWgtVec *adjList, int nodeCount)
 {
 	int** adjMatrix = calloc(nodeCount, sizeof(int *));
 	int dataValue = 0;
@@ -39,11 +40,14 @@ int** makeAdjMatrix(IntVec *adjList, int nodeCount)
 	}
 	return adjMatrix;
 }
+*/
 
-IntVec* transposeGraph(IntVec* adjList, int n)
+
+/*
+AdjWgtVec* transposeGraph(AdjWgtVec* adjList, int n)
 {
 	int data = 0;
-	IntVec* transposedList = calloc(n+1, sizeof(IntVec));
+	AdjWgtVec* transposedList = calloc(n+1, sizeof(AdjWgtVec));
 	for (int i = 0; i <= n; i++) //initialize a new array of vectors.
 	{
 		transposedList[i] = intMakeEmptyVec();
@@ -60,26 +64,29 @@ IntVec* transposeGraph(IntVec* adjList, int n)
 	}
 	return transposedList;
 }
+*/
 
-void printAdjVerts(IntVec *adjList, int nodeCount)
+void printAdjVerts(AdjWgtVec *adjList, int nodeCount)
 {
-	int n = nodeCount, m = 0, data = 0;
+	int n = nodeCount, m = 0;
 	int debug = 0;
+	AdjWgt data;
+
 	m = getEdgeCount(adjList);
 
 	fprintf(stdout, "nodeCount = %d\nedgeCount = %d\n\n", n, m);
 	for (int w = 1; w <= n; w++) //for each node
 	{
 		fprintf(stdout, "%d  [", (w));
-		for (int u = 0; u < intSize(adjList[w]); u++) //for each edge from that node
+		for (int u = 0; u < adjWgtSize(adjList[w]); u++) //for each edge from that node
 		{
-			data = intData(adjList[w], u);
+			data = adjWgtData(adjList[w], u);
 
 			//if (data < 0)//this might mess up alignment
 				//fprintf(stdout, "%d", (int*)data);//maybe-------------------------
 			//else
-				fprintf(stdout, "%d", data);
-			if (u < intSize(adjList[w]) - 1) //if its not the last element
+				fprintf(stdout, "%d", data.to);
+			if (u < adjWgtSize(adjList[w]) - 1) //if its not the last element
 					fprintf(stdout, ", ");
 			
 		}
@@ -87,7 +94,7 @@ void printAdjVerts(IntVec *adjList, int nodeCount)
 	}
 	fprintf(stdout, "\n");
 }
-
+/*
 void printAdjMatrix(int** adjMatrix, int nodeCount)
 {
 	fprintf(stdout, "Matrix:\n");
@@ -110,20 +117,22 @@ void printAdjMatrix(int** adjMatrix, int nodeCount)
 	}
 	fprintf(stdout, "\n\n");
 }
+*/
 
 
 /*
 The below function callocs an array of vectors and fills it based on inputFile
 	then returns a pointer to the array.
 */
-IntVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
+AdjWgtVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 {
 	//local variables
 	int tempInt = 0, dataValue = 0, equal = 0;
-	float weight = 0.00;
-	IntVec *tempList = NULL;
+	double weight = 0.00;
+	AdjWgtVec *tempList = NULL;
 	char *lineOfFile, *tempToken,
 		*tempDataValue, *tempWeight;
+	AdjWgt tempWgt, tempWgt2;
 	//begin the calloc's-------------------------------------------------
 	lineOfFile = calloc(30, sizeof(char));
 	tempToken = calloc(30, sizeof(char));
@@ -131,9 +140,9 @@ IntVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 	tempWeight = calloc(15, sizeof(char));
 
 	
-	tempList = calloc(nodeCount + 1, sizeof(IntVec));
+	tempList = calloc(nodeCount + 1, sizeof(AdjWgtVec));
 	for (int i = 0; i <= nodeCount; i++)
-		tempList[i] = intMakeEmptyVec();
+		tempList[i] = adjWgtMakeEmptyVec();
 	//below is some input file cleanup
 	for (int i = 0; i < 1; i++)
 		fgets(lineOfFile, 20, inputFile);
@@ -145,15 +154,21 @@ IntVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 
 		tempInt = (int)tempToken[0] - (int)'0';
 		dataValue = (int)tempDataValue[0] - (int)'0';
-		if (!((float)tempWeight[0] == 0.00))
-			weight = (float)tempWeight[0] - (float)'0';
+		if (!((double)tempWeight[0] == 0.00))
+			weight = (double)tempWeight[0] - (double)'0';
 
-			intVecPush(tempList[tempInt], dataValue);
+		tempWgt.to = dataValue;
+		tempWgt.wgt = weight;
+
+		adjWgtVecPush(tempList[tempInt], tempWgt);//dataValue);
 			globalEdgeCount++;
-			equal = strcmp(flag, "-U");
-			if (equal == 0) //if undirected
+			equal = strcmp(flag, "-P");//if primm's algorithm, load undirected.
+			if (equal == 0) 
 			{
-				intVecPush(tempList[dataValue], tempInt);
+				tempWgt2.to = tempInt;
+				tempWgt2.wgt = weight;
+
+				adjWgtVecPush(tempList[dataValue], tempWgt2);
 				globalEdgeCount++;
 			}
 	}
@@ -169,13 +184,13 @@ int getNodeCount(FILE *inputFile) //Only call once or there might be errors.
 	return (int)((int)tempString[0] - (int)'0'); //convert string to int.
 }
 
-int getEdgeCount(IntVec *adjList) //Can call multiple times.
+int getEdgeCount(AdjWgtVec *adjList) //Can call multiple times.
 {
 	return globalEdgeCount;
 	/*
 	fprintf(stdout, "congrats, made it to getEdgeCount\n");
 	int n = 0, m = 0;
-	n = sizeof(adjList) / sizeof(IntVec); //no it doesnt.
+	n = sizeof(adjList) / sizeof(AdjWgtVec); //no it doesnt.
 	n -= 1;
 	for (int i = 0; i < n; i++)
 		m += intSize(adjList[i]);

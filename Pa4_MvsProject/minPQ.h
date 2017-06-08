@@ -5,7 +5,16 @@
 #define C101MinPQ
 /* Multiple typedefs for the same type are an error in C. */
 
-typedef struct MinPQNode * MinPQ;
+typedef struct minPQNode //nodeObj minPQ is pointer to that Obj
+{
+	int numVertices, numPQ;
+	int minVertex;
+	double infinity;
+	int* status, *parent;
+	double* priority;
+
+}minPQNode;
+typedef struct minPQNode * MinPQ;
 
 #define UNSEEN ('u')
 #define FRINGE ('f')

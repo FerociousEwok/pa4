@@ -74,6 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -90,6 +91,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -111,13 +113,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="adjWgtVec.h" />
-    <ClInclude Include="loadGraph.h" />
+    <ClInclude Include="loadWgtGraph.h" />
     <ClInclude Include="minPQ.h" />
+    <ClInclude Include="greedy04.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adjWgtVec.c" />
-    <ClCompile Include="loadGraph.c" />
+    <ClCompile Include="loadWgtGraph.c" />
     <ClCompile Include="minPQ.c" />
+    <ClCompile Include="greedy04.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

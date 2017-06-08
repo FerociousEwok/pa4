@@ -170,8 +170,8 @@ int main(int argc, char **argv)
 
 	//Now check with algorithm they want and perform it.
 	
-	parent = calloc(nodeCount, sizeof(int));
-	priority = calloc(nodeCount, sizeof(double));
+	parent = calloc(nodeCount+1, sizeof(int));
+	priority = calloc(nodeCount+1, sizeof(double));
 	if (!strcmp(flag, "-P"))//if primm's algorithm.
 	{
 		fprintf(stdout, "\n\nPerforming Primm's Algorithm:\n\n");
@@ -199,6 +199,7 @@ int main(int argc, char **argv)
 	}
 	fprintf(stdout, "\n");
 
+	getc(stdin);
 }
 
 	/*

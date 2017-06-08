@@ -45,7 +45,7 @@ int isEmptyPQ(MinPQ pq)//returns 1 if empty
 {
 	if (pq == NULL)
 		exit(EXIT_FAILURE);
-	return (pq->numVertices == 0);
+	return (pq->numPQ == 0);
 }
 
 int getMin(MinPQ pq)
@@ -53,7 +53,7 @@ int getMin(MinPQ pq)
 	if (pq == NULL)
 		exit(EXIT_FAILURE);
 
-	double minWgt = -0.0;
+	double minWgt = DBL_MAX;
 
 	if (!(pq->minVertex == -1))
 		return pq->minVertex;

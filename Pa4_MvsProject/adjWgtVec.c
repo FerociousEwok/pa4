@@ -15,15 +15,6 @@ typedef struct AdjWgtVecNode
 typedef struct AdjWgtVecNode * AdjWgtVec;
 
 
-/*
-AdjWgt createAdjWgt(int to, double wgt)
-{
-	AdjWgt tempWgt;// = calloc(1, sizeof(AdjWgt));
-	tempWgt.to = -1;
-	tempWgt.wgt = -1;
-	return tempWgt;
-}
-*/
 
 AdjWgt adjWgtTop(AdjWgtVec myVec)
 {
@@ -77,7 +68,7 @@ void adjWgtVecPush(AdjWgtVec myVec, AdjWgt newE)
 	//replacing 
 	if (adjWgtSize(myVec) == adjWgtCapacity(myVec))
 	{
-		myVec->data = (struct AdjWgtStruct*)realloc(myVec->data, (sizeof(struct AdjWgtStruct) * (adjWgtSize(myVec)) * 2));//found her
+		myVec->data = (struct AdjWgtStruct*)realloc(myVec->data, (sizeof(struct AdjWgtStruct) * (adjWgtSize(myVec)) * 2));
 		if (myVec->data == NULL) //if realloc failed.
 		{
 			fprintf(stderr, "Error: realloc failed");

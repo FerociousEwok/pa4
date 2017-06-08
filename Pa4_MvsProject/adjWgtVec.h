@@ -1,5 +1,5 @@
 /* adjWgtVec.h
- * (what is the overall purpose of this file? Replace question with your text)
+ * (This file defines an adt.)
  */
 
 #ifndef C101AdjWgtVec
@@ -25,7 +25,7 @@ static const int adjWgtInitCap = 4;
  */
 
 /** adjWgtTop()
- * (what are the preconditions? Replace question with your text)
+ * (precondition is myVec not null)
  */
 AdjWgt adjWgtTop(AdjWgtVec myVec);
 

@@ -1,70 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "adjWgtVec.h"//adWgtVec.h instead when its done
+#include "adjWgtVec.h"
 #include "loadWgtGraph.h"
 /*
-loadGraph.c
+loadWgtGraph.c
 Ben Donn
 bdonn
 pa4
-ToDo: replace AdjWgtVec type with AdjWgtVecNode type
 */
 int globalEdgeCount = 0;
-/*
 
-int** makeAdjMatrix(AdjWgtVec *adjList, int nodeCount)
-{
-	int** adjMatrix = calloc(nodeCount, sizeof(int *));
-	int dataValue = 0;
-	for (int i = 0; i <= nodeCount; i++)
-		adjMatrix[i] = calloc(nodeCount, sizeof(int));
-
-	for (int i = 1; i <= nodeCount; i++)//for each node. i.e. each index of array.
-	{
-		for (int j = 1; j <= nodeCount; j++) //for each node that adjList[i] could have an edge to.
-		{
-			for (int z = 0; z < intSize(adjList[i]); z++) //for each element in adjList[i]->data
-			{
-				dataValue = intData(adjList[i], z);
-				if (dataValue == j)//if adjList[i] has edge to adjList[j]
-				{
-					adjMatrix[i][j] = 1;
-				}
-				else if(adjMatrix[i][j] != 1)
-				{
-					adjMatrix[i][j] = 0;
-				}
-			}
-		}
-	}
-	return adjMatrix;
-}
-*/
-
-
-/*
-AdjWgtVec* transposeGraph(AdjWgtVec* adjList, int n)
-{
-	int data = 0;
-	AdjWgtVec* transposedList = calloc(n+1, sizeof(AdjWgtVec));
-	for (int i = 0; i <= n; i++) //initialize a new array of vectors.
-	{
-		transposedList[i] = intMakeEmptyVec();
-	}
-
-	for (int i = 1; i <= n; i++)//traverse through adjList data
-	{
-		for (int j = 0; j < intSize(adjList[i]); j++)//for each element in adjList[i]->data
-		{
-			data = intData(adjList[i], j);
-			if(data >=0) //added to avoid bad number
-				intVecPush(transposedList[data], i);//transpose from adjList to new vector array.
-		}
-	}
-	return transposedList;
-}
-*/
 
 void printAdjVerts(AdjWgtVec *adjList, int nodeCount)
 {
@@ -94,30 +40,6 @@ void printAdjVerts(AdjWgtVec *adjList, int nodeCount)
 	}
 	fprintf(stdout, "\n");
 }
-/*
-void printAdjMatrix(int** adjMatrix, int nodeCount)
-{
-	fprintf(stdout, "Matrix:\n");
-	fprintf(stdout, "     ");
-	for (int i = 1; i <= nodeCount; i++)
-	{
-		fprintf(stdout, "%d  ", i);
-	}
-	fprintf(stdout, "\n");
-	for (int i = 1; i <= nodeCount; i++) //for each adjList[i]
-	{
-		fprintf(stdout, "\n%d :  ", i);
-		for (int j = 1; j <= nodeCount; j++) //for each potential edge
-		{
-			if(adjMatrix[i][j] == 0 || adjMatrix[i][j] == 1)//needed in case where intSize(vector) == 0
-				fprintf(stdout, "%d  ", adjMatrix[i][j]);
-			else
-				fprintf(stdout, "0  ");
-		}
-	}
-	fprintf(stdout, "\n\n");
-}
-*/
 
 
 /*
@@ -187,13 +109,4 @@ int getNodeCount(FILE *inputFile) //Only call once or there might be errors.
 int getEdgeCount(AdjWgtVec *adjList) //Can call multiple times.
 {
 	return globalEdgeCount;
-	/*
-	fprintf(stdout, "congrats, made it to getEdgeCount\n");
-	int n = 0, m = 0;
-	n = sizeof(adjList) / sizeof(AdjWgtVec); //no it doesnt.
-	n -= 1;
-	for (int i = 0; i < n; i++)
-		m += intSize(adjList[i]);
-	return m;
-	*/
 }

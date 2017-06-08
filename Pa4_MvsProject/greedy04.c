@@ -9,64 +9,29 @@ pa3
 #include <stdlib.h>
 #include <string.h>
 #include "minPQ.h"
-#include "AdjWgtVec.h"
+#include "adjWgtVec.h"
 #include "greedy04.h"
 #include "loadWgtGraph.h"
-
-
-
 int nodeCount = 0;
-/*
-//AdjWgtVec finishStk1; should be in dfsTrace1.c struct now
-//char *color; should be in dfsTrace1.c struct now
-
-
-AdjWgtVec* findSCCs(AdjWgtVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.; Also, dfs1Trace must take parameter roots also.
-{
-	AdjWgtVec *roots;//where the scc answer will go.
-	int tempRoot = -1, newRoot2 = -1;
-	AdjWgtVec *adjListT;//transposed
-	dfsData dfsInfoT;//transposed
-	adjListT = calloc(nodeCount, sizeof(AdjWgtVec));
-	dfsInfoT = makeNewDfsDataObj(nodeCount);
-
-	roots = calloc(nodeCount + 1, sizeof(AdjWgtVec));
-
-	
-	// Vector should only be made if its a root, handle this in dfsPhase2.c
-	for (int i = 1; i <= nodeCount; i++)
-	{
-		roots[i] = intMakeEmptyVec();
-	}
-	
-
-	adjListT = transposeGraph(adjList, nodeCount);
-	fprintf(stdout, "\n-----Transpose-----\n");
-	printAdjVerts(adjListT, nodeCount);
-	printAdjMatrix(makeAdjMatrix(adjListT, nodeCount), nodeCount);//formating my be needed in these lines.
-
-	roots = dfsPhase2(adjListT, dfsInfoT);//------Formating probably needed for the below lines----
-	
-	printDfsData2(dfsInfoT, roots);
-	return roots;
-}
-*/
-
-
 
 int updateFringePrim(MinPQ pq, AdjWgtVec myVec, int v)
 {
-	for (int i = 0; i<adjWgtSize(myVec); i++)//while more edges
+	for (int i = 0; i < adjWgtSize(myVec); i++)//while more edges
 	{
 		AdjWgt weightInfo = adjWgtData(myVec, i);
 		int w = weightInfo.to;
 		double newWgt = weightInfo.wgt;
+
 		if (getStatus(pq, w) == UNSEEN)
+		{
 			insertPQ(pq, w, newWgt, v);
-		else if (getStatus(pq, w) == FRINGE)
-			if (newWgt < getPriority(pq, w))
-				decreaseKey(pq, w, newWgt, v);
-		//remAdj = rest(remAdj);//what?
+		}
+		else
+		{
+			if (getStatus(pq, w) == FRINGE)
+				if (newWgt < getPriority(pq, w))
+					decreaseKey(pq, w, newWgt, v);
+		}
 	}
 	return EXIT_SUCCESS;
 }
@@ -86,8 +51,6 @@ MinPQ primMST(AdjWgtVec *adjInfo, int n, int s, int *parent, double *priority)
 	return pq;
 }
 
-
-
 int updateFringeDijkstras(MinPQ pq, AdjWgtVec myVec, int v)
 {
 	double myDist = getPriority(pq, v);
@@ -96,6 +59,8 @@ int updateFringeDijkstras(MinPQ pq, AdjWgtVec myVec, int v)
 		AdjWgt weightInfo = adjWgtData(myVec, i);
 		int w = weightInfo.to;
 		double newDist = myDist + weightInfo.wgt;
+		
+		
 		if (getStatus(pq, w) == UNSEEN)
 			insertPQ(pq, w, newDist, v);
 		else if (getStatus(pq, w) == FRINGE)
@@ -144,7 +109,7 @@ int main(int argc, char **argv)
 	{
 		fprintf(stdout, "\nPlease type a file name(Up to 25 characters): ");
 		userInput = calloc(25, sizeof(char));
-		//userInput = getc(stdin);//thats not how this should work. use scanf
+		
 		scanf("%s", userInput);
 		tempInputString = userInput;
 		fprintf(stdout, "\n");
@@ -201,33 +166,3 @@ int main(int argc, char **argv)
 
 	getc(stdin);
 }
-
-	/*
-	adjList = loadGraph(inputFile, nodeCount, flag);
-	adjMatrix = makeAdjMatrix(adjList, nodeCount);
-	printAdjVerts(adjList, nodeCount);
-	if (nodeCount <= 20)
-		printAdjMatrix(adjMatrix, nodeCount);
-	roots1 = calloc(nodeCount + 1, sizeof(AdjWgtVec));
-	dfsInfo = makeNewDfsDataObj(nodeCount);
-	newRoot = dfsSweepT(dfsInfo);
-	while (newRoot != -1)//infinite loop here i think.
-	{
-		roots1[newRoot] = intMakeEmptyVec();
-		dfsTrace1(adjList, newRoot, dfsInfo, roots1, newRoot);//dfs starting at node newRoot
-		newRoot = dfsSweepT(dfsInfo);
-	}
-	printDfsData(dfsInfo);
-	fprintf(stdout, "\nFSTK: ");
-	//while (intSize(getFinishStk(dfsInfo)) != 0)
-	for(int i = 0; i< intSize(*getFinishStk(dfsInfo)); i++)//added star6/5:0352pm
-	{
-		fprintf(stdout, "%d  ", intData(*getFinishStk(dfsInfo), i));//added star^
-	}
-	fprintf(stdout, "\n");
-	sccList = calloc(nodeCount, sizeof(AdjWgtVec));
-	sccList = findSCCs(adjList, dfsInfo);
-	fprintf(stdout, "Program completed with no errors, Press any key to exit: ");
-	getc(stdin);
-	return EXIT_SUCCESS;
-	*/

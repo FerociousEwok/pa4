@@ -3,20 +3,6 @@
 #include <stdio.h>
 #include <float.h>
 #include "minPQ.h"
-/*
-typedef struct minPQNode //nodeObj minPQ is pointer to that Obj
-{
-	int numVertices, numPQ;
-	int minVertex;
-	double infinity;
-	int* status, *parent;
-	double* priority;
-
-}minPQNode;
-*/
-
-
-
 
 MinPQ createPQ(int n, int status[], double priority[], int parent[])
 {
@@ -44,7 +30,7 @@ MinPQ createPQ(int n, int status[], double priority[], int parent[])
 int isEmptyPQ(MinPQ pq)//returns 1 if empty
 {
 	if (pq == NULL)
-		exit(EXIT_FAILURE);
+		return 1;
 	return (pq->numPQ == 0);
 }
 
@@ -72,21 +58,24 @@ int getMin(MinPQ pq)
 
 int getStatus(MinPQ pq, int id)
 {
-	if (pq == NULL || id < 1 || id > pq->numVertices)
-		exit(EXIT_FAILURE);
+	if (pq == NULL || id < 0 || id > pq->numVertices)
+	{
+		return 117;
+		//exit(EXIT_FAILURE);
+	}
 	return pq->status[id];
 }
 
 int getParent(MinPQ pq, int id)
 {
-	if (pq == NULL || id < 1 || id > pq->numVertices)
+	if (pq == NULL)
 		exit(EXIT_FAILURE);
 	return pq->parent[id];
 }
 
 double getPriority(MinPQ pq, int id)
 {
-	if (pq == NULL || id < 1 || id > pq->numVertices)
+	if (pq == NULL)
 		exit(EXIT_FAILURE);
 	return pq->priority[id];
 }
@@ -104,8 +93,12 @@ void delMin(MinPQ pq)
 
 void insertPQ(MinPQ pq, int id, double priority, int par)
 {
-	if (pq == NULL || id < 1 || id > pq->numVertices)
-		exit(EXIT_FAILURE);
+	if (pq == NULL || id < 0 || id > pq->numVertices)
+	{
+		//exit(EXIT_FAILURE);
+		return;
+	}
+
 	pq->parent[id] = par;
 	pq->priority[id] = priority;
 	pq->status[id] = FRINGE;
@@ -116,7 +109,7 @@ void insertPQ(MinPQ pq, int id, double priority, int par)
 
 void decreaseKey(MinPQ pq, int id, double priority, int par)
 {
-	if (pq == NULL || id < 1 || id > pq->numVertices)
+	if (pq == NULL)
 		exit(EXIT_FAILURE);
 	pq->parent[id] = par;
 	pq->priority[id] = priority;

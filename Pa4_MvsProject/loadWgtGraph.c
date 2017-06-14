@@ -74,10 +74,10 @@ AdjWgtVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 			fgets(lineOfFile, 20, inputFile);
 		sscanf(lineOfFile, "%s %s %s", tempToken, tempDataValue, tempWeight);
 
-		tempInt = (int)tempToken[0] - (int)'0';
-		dataValue = (int)tempDataValue[0] - (int)'0';
-		if (!((double)tempWeight[0] == 0.00))
-			weight = (double)tempWeight[0] - (double)'0';
+		tempInt = atoi(tempToken);//(int)tempToken[0] - (int)'0';
+		dataValue = atoi(tempDataValue);//(int)tempDataValue[0] - (int)'0';
+		//if (!((double)tempWeight[0] == 0.00))
+		weight = atof(tempWeight);//(double)tempWeight[0] - (double)'0';
 
 		tempWgt.to = dataValue;
 		tempWgt.wgt = weight;
@@ -100,10 +100,11 @@ AdjWgtVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 int getNodeCount(FILE *inputFile) //Only call once or there might be errors.
 {
 	int temp = 0;
-	char tempString[5];
-	fgets(tempString, 2, inputFile);
-	
-	return (int)((int)tempString[0] - (int)'0'); //convert string to int.
+	char *tempString = calloc(5, sizeof(char));
+	fgets(tempString, 5, inputFile);
+	temp = atoi(tempString);
+	//temp -= (int)'0';
+	return temp;//(int)((int)tempString - (int)'0'); //convert string to int.
 }
 
 int getEdgeCount(AdjWgtVec *adjList) //Can call multiple times.

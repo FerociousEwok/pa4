@@ -4,6 +4,7 @@ Ben Donn
 bdonn
 pa3
 
+
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -107,8 +108,8 @@ int main(int argc, char **argv)
 	tempInputString = argv[3];
 	if (strcmp(tempInputString, "-") == 0)
 	{
-		fprintf(stdout, "\nPlease type a file name(Up to 25 characters): ");
-		userInput = calloc(25, sizeof(char));
+		fprintf(stdout, "\nPlease type a file name(Up to 30 characters): ");
+		userInput = calloc(30, sizeof(char));
 		
 		scanf("%s", userInput);
 		tempInputString = userInput;

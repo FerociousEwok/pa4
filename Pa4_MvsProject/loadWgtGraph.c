@@ -49,48 +49,47 @@ The below function callocs an array of vectors and fills it based on inputFile
 AdjWgtVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 {
 	//local variables
-	int tempInt = 0, dataValue = 0, equal = 0;
-	double weight = 0.00;
+	int *tempInt = 0, *dataValue = 0, equal = 0;
+	float* weight = calloc(1, sizeof(float));
 	AdjWgtVec *tempList = NULL;
-	char *lineOfFile, *tempToken,
-		*tempDataValue, *tempWeight;
+	char *lineOfFile, *tempToken;
 	AdjWgt tempWgt, tempWgt2;
 	//begin the calloc's-------------------------------------------------
 	lineOfFile = calloc(30, sizeof(char));
-	tempToken = calloc(30, sizeof(char));
-	tempDataValue = calloc(30, sizeof(char));
-	tempWeight = calloc(15, sizeof(char));
-
+	tempInt = calloc(1, sizeof(int));
+	dataValue = calloc(1, sizeof(int));
+	weight = calloc(1, sizeof(float));
+	
 	
 	tempList = calloc(nodeCount + 1, sizeof(AdjWgtVec));
 	for (int i = 0; i <= nodeCount; i++)
 		tempList[i] = adjWgtMakeEmptyVec();
-	//below is some input file cleanup
-	for (int i = 0; i < 1; i++)
-		fgets(lineOfFile, 20, inputFile);
+	
 	while ((fgets(lineOfFile, 20, inputFile) != NULL)) //for each line of the file.
 	{
 		if (lineOfFile[0] == '\n') //if fgets needed to clear newline character
 			fgets(lineOfFile, 20, inputFile);
-		sscanf(lineOfFile, "%s %s %s", tempToken, tempDataValue, tempWeight);
+		sscanf(lineOfFile, "%d %d %f", tempInt, dataValue, weight);
 
+		/*
 		tempInt = atoi(tempToken);//(int)tempToken[0] - (int)'0';
 		dataValue = atoi(tempDataValue);//(int)tempDataValue[0] - (int)'0';
 		//if (!((double)tempWeight[0] == 0.00))
 		weight = atof(tempWeight);//(double)tempWeight[0] - (double)'0';
+		*/
+		
+		tempWgt.to = *dataValue;
+		tempWgt.wgt = *weight;
 
-		tempWgt.to = dataValue;
-		tempWgt.wgt = weight;
-
-		adjWgtVecPush(tempList[tempInt], tempWgt);//dataValue);
+		adjWgtVecPush(tempList[*tempInt], tempWgt);//dataValue);
 			globalEdgeCount++;
 			equal = strcmp(flag, "-P");//if primm's algorithm, load undirected.
 			if (equal == 0) 
 			{
-				tempWgt2.to = tempInt;
-				tempWgt2.wgt = weight;
+				tempWgt2.to = *tempInt;
+				tempWgt2.wgt = *weight;
 
-				adjWgtVecPush(tempList[dataValue], tempWgt2);
+				adjWgtVecPush(tempList[*dataValue], tempWgt2);
 				globalEdgeCount++;
 			}
 	}

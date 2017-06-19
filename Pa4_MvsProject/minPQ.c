@@ -41,9 +41,11 @@ int getMin(MinPQ pq)
 
 	double minWgt = DBL_MAX;
 
+	/*
 	if (!(pq->minVertex == -1))
 		return pq->minVertex;
 	else
+	*/
 		for (int v = 1; v <= pq->numVertices; v++)
 		{
 			if (pq->status[v] == FRINGE)

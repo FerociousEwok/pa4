@@ -14,7 +14,17 @@ pa3
 #include "greedy04.h"
 #include "loadWgtGraph.h"
 int nodeCount = 0;
+/*
+void greedytree(AdjWgtVec *adjInfo, int n, int s, int *parent, double *priority)
+{
 
+}
+
+double calcPriority()
+{
+
+}
+*/
 int updateFringePrim(MinPQ pq, AdjWgtVec myVec, int v)
 {
 	for (int i = 0; i < adjWgtSize(myVec); i++)//while more edges
@@ -63,10 +73,10 @@ int updateFringeDijkstras(MinPQ pq, AdjWgtVec myVec, int v)
 		
 		
 		if (getStatus(pq, w) == UNSEEN)
-			insertPQ(pq, w, newDist, v);
+			insertPQ(pq, w, weightInfo.wgt, v);
 		else if (getStatus(pq, w) == FRINGE)
 			if (newDist < getPriority(pq, w))
-				decreaseKey(pq, w, newDist, v);
+				decreaseKey(pq, w, weightInfo.wgt, v);//here?
 	}
 	return EXIT_SUCCESS;
 }
@@ -89,14 +99,14 @@ int main(int argc, char **argv)
 {
 	//variables
 	FILE *inputFile = NULL;
-	char *tempInputString = "", *readMode = "r+", *flag = "default", *userInput = "";
+	char *tempInputString = "", *readMode = "r+", *flag = "default", *userInput;
 	AdjWgtVec *adjList;
 	int flagCheckOne = 0, flagCheckTwo = 0, startVertex = 0;
 	MinPQ resultPQ;
 	int *parent;
 	double *priority;
 	//Cmd Line: ./greedy04 [-P or -D]  [start vertex]  "filename"
-
+	userInput = calloc(30, sizeof(char));
 	if (argc != 4) //no command line argument
 	{
 		fprintf(stderr, "Error: no command line arguments.\nPress any key to close: ");
@@ -109,7 +119,7 @@ int main(int argc, char **argv)
 	if (strcmp(tempInputString, "-") == 0)
 	{
 		fprintf(stdout, "\nPlease type a file name(Up to 30 characters): ");
-		userInput = calloc(30, sizeof(char));
+		
 		
 		scanf("%s", userInput);
 		tempInputString = userInput;
@@ -135,9 +145,9 @@ int main(int argc, char **argv)
 	printAdjVerts(adjList, nodeCount);
 
 	//Now check with algorithm they want and perform it.
-	
 	parent = calloc(nodeCount+1, sizeof(int));
 	priority = calloc(nodeCount+1, sizeof(double));
+
 	if (!strcmp(flag, "-P"))//if primm's algorithm.
 	{
 		fprintf(stdout, "\n\nPerforming Primm's Algorithm:\n\n");
@@ -148,22 +158,46 @@ int main(int argc, char **argv)
 		fprintf(stdout, "\n\nPerforming dijkstra's Algorithm:\n\n");
 		resultPQ = dijkstraSSSP(adjList, nodeCount, startVertex, parent, priority);
 	}
-	fprintf(stdout, "Starting Vertex == %d\nStatus: ", startVertex);
+
+	fprintf(stdout, "Starting Vertex == %d\n\n          ", startVertex);
 	for (int i = 1; i <= nodeCount; i++)
 	{
-		fprintf(stdout, "%d ", getStatus(resultPQ, i));
+		fprintf(stdout, "%2d   ", i);
 	}
-	fprintf(stdout, "\nParent: ");
+	fprintf(stdout, "\n           ");
+	for (int i = 0; i <= nodeCount*5; i++)
+	{
+		fprintf(stdout, "-", i);
+	}
+	fprintf(stdout, "\nStatus:    ", startVertex);
 	for (int i = 1; i <= nodeCount; i++)
 	{
-		fprintf(stdout, "%d ", getParent(resultPQ, i));
+		fprintf(stdout, "%c    ", getStatus(resultPQ, i));
+	}
+	fprintf(stdout, "\nParent:   ");
+	for (int i = 1; i <= nodeCount; i++)
+	{
+		fprintf(stdout, "%2d   ", getParent(resultPQ, i));
 	}
 	fprintf(stdout, "\nPriority: ");
 	for (int i = 1; i <= nodeCount; i++)
 	{
-		fprintf(stdout, "%f ", getPriority(resultPQ, i));
+		fprintf(stdout, "%.1f  ", getPriority(resultPQ, i));
 	}
 	fprintf(stdout, "\n");
 
+	for (int i = 1; i <= nodeCount; i++)
+	{
+		free(adjList[i]);
+	}
+	free(adjList);
+	free(userInput);
+	free(inputFile);
+	free(resultPQ->parent);
+	free(resultPQ->status);
+	free(resultPQ->priority);
+	//free(resultPQ);
+	printf("\nProgram completed, press any key to exit: ");
 	getc(stdin);
+	
 }

@@ -126,7 +126,10 @@ int main(int argc, char **argv)
 	priority = calloc(nodeCount+1, sizeof(double));
 	//perform algorithm and return result.
 	resultPQ = greedytree(adjList, nodeCount, startVertex, parent, priority, flag);
-	
+	if (!strcmp(flag, "-P"))//if primm's algorithm.
+		fprintf(stdout, "\n\nPerforming Primm's Algorithm:\n\n");
+	else //if dijkstra's algorithm.
+		fprintf(stdout, "\n\nPerforming dijkstra's Algorithm:\n\n");
 	//Print out MinPQ data structure.
 	fprintf(stdout, "Starting Vertex == %d\n\n          ", startVertex);
 	for (int i = 1; i <= nodeCount; i++)

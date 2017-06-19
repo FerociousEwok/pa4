@@ -24,18 +24,13 @@ void printAdjVerts(AdjWgtVec *adjList, int nodeCount)
 	fprintf(stdout, "nodeCount = %d\nedgeCount = %d\n\n", n, m);
 	for (int w = 1; w <= n; w++) //for each node
 	{
-		fprintf(stdout, "%d  [", (w));
+		fprintf(stdout, " %2d  [", (w));
 		for (int u = 0; u < adjWgtSize(adjList[w]); u++) //for each edge from that node
 		{
 			data = adjWgtData(adjList[w], u);
-
-			//if (data < 0)//this might mess up alignment
-				//fprintf(stdout, "%d", (int*)data);//maybe-------------------------
-			//else
-				fprintf(stdout, "%d", data.to);
+			fprintf(stdout, "%2d", data.to);
 			if (u < adjWgtSize(adjList[w]) - 1) //if its not the last element
-					fprintf(stdout, ", ");
-			
+				fprintf(stdout, ", ");
 		}
 		fprintf(stdout, "]\n");
 	}
@@ -71,13 +66,6 @@ AdjWgtVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 		if (lineOfFile[0] == '\n') //if fgets needed to clear newline character
 			fgets(lineOfFile, 20, inputFile);
 		sscanf(lineOfFile, "%d %d %f", tempInt, dataValue, weight);
-
-		/*
-		tempInt = atoi(tempToken);//(int)tempToken[0] - (int)'0';
-		dataValue = atoi(tempDataValue);//(int)tempDataValue[0] - (int)'0';
-		//if (!((double)tempWeight[0] == 0.00))
-		weight = atof(tempWeight);//(double)tempWeight[0] - (double)'0';
-		*/
 		
 		tempWgt.to = *dataValue;
 		tempWgt.wgt = *weight;
@@ -97,14 +85,14 @@ AdjWgtVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 	return tempList;
 }
 
-int getNodeCount(FILE *inputFile) //Only call once or there might be errors.
+int getNodeCount(FILE *inputFile) 
 {
 	int temp = 0;
 	char *tempString = calloc(5, sizeof(char));
 	fgets(tempString, 5, inputFile);
 	temp = atoi(tempString);
-	//temp -= (int)'0';
-	return temp;//(int)((int)tempString - (int)'0'); //convert string to int.
+	
+	return temp;
 }
 
 int getEdgeCount(AdjWgtVec *adjList) //Can call multiple times.

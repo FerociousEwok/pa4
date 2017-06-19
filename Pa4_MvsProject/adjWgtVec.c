@@ -1,3 +1,9 @@
+/*
+adjWgtVec.c
+Ben Donn
+bdonn
+pa4
+*/
 #include "adjWgtVec.h"
 #include <stdlib.h>
 #include <stdio.h>

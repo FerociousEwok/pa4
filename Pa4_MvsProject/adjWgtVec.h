@@ -1,5 +1,7 @@
 /* adjWgtVec.h
- * (This file defines an adt.)
+ * Ben Donn
+ * pa4
+ * AdjWgtVec adt. similar to intVec but with weights.
  */
 
 #ifndef C101AdjWgtVec

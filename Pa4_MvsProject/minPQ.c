@@ -1,4 +1,9 @@
-
+/*
+minPQ.c
+Ben Donn
+bdonn
+pa4
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <float.h>
@@ -10,10 +15,10 @@ MinPQ createPQ(int n, int status[], double priority[], int parent[])
 	tempPQ = calloc(1, sizeof(MinPQ));//assuming n is nodeCount;
 	
 
-	//tempPQ->parent = calloc(n + 1, sizeof(int));
+
 	tempPQ->parent = parent;
 
-	tempPQ->priority = priority;// calloc(n + 1, sizeof(double));//init size?
+	tempPQ->priority = priority;
 	tempPQ->status = status;
 	for (int i = 1; i <= n; i++)
 	{
@@ -41,11 +46,6 @@ int getMin(MinPQ pq)
 
 	double minWgt = DBL_MAX;
 
-	/*
-	if (!(pq->minVertex == -1))
-		return pq->minVertex;
-	else
-	*/
 		for (int v = 1; v <= pq->numVertices; v++)
 		{
 			if (pq->status[v] == FRINGE)
@@ -63,7 +63,6 @@ int getStatus(MinPQ pq, int id)
 	if (pq == NULL || id < 0 || id > pq->numVertices)
 	{
 		return 117;
-		//exit(EXIT_FAILURE);
 	}
 	return pq->status[id];
 }
@@ -97,7 +96,6 @@ void insertPQ(MinPQ pq, int id, double priority, int par)
 {
 	if (pq == NULL || id < 0 || id > pq->numVertices)
 	{
-		//exit(EXIT_FAILURE);
 		return;
 	}
 

@@ -1,4 +1,6 @@
 /* minPQ.h (This file impliments a Priority Queue adt.)
+* Ben Donn
+* pa4
 */
 
 #ifndef C101MinPQ
@@ -25,43 +27,43 @@ typedef struct minPQNode * MinPQ;
 
 int isEmptyPQ(MinPQ pq); //precondition is pq no being null.
 
-/** getMin (what are the preconditions, if any? Replace this question with your comments.)
+/** getMin (//precondition is pq not being null.)
 */
-int getMin(MinPQ pq);//precondition is pq not being null.
+int getMin(MinPQ pq);
 
-/** getStatus (what are the preconditions, if any? Replace this question with your comments.)
+/** getStatus (//precondition is pq not build null and id being in between 1 and nodeCount+1)
 */
-int getStatus(MinPQ pq, int id);//precondition is pq not build null and id being in between 1 and nodeCount+1
+int getStatus(MinPQ pq, int id);
 
-/** getParent (what are the preconditions, if any? Replace this question with your comments.)
+/** getParent (//precondition is pq not being null and id being in between 1 and nodeCount+1)
 */
-int getParent(MinPQ pq, int id);//precondition is pq not being null and id being in between 1 and nodeCount+1
+int getParent(MinPQ pq, int id);
 
-/** getPriority (what are the preconditions, if any? Replace this question with your comments.)
+/** getPriority (//precondition is pq not being null and id being in range.)
 */
-double getPriority(MinPQ pq, int id);//precondition is pq not being null and id being in range.
+double getPriority(MinPQ pq, int id);
 
 
 /* ***************** Manipulation procedures */
 
-/** delMin (what are the preconditions and/or postconditions? Replace this question with your comment.)
+/** delMin (//precondition pq not null.)
 */
-void delMin(MinPQ pq);//precondition pq not null.
+void delMin(MinPQ pq);
 
-/** insertPQ (what are the preconditions and/or postconditions? Replace this question with your comment.)
+/** insertPQ (//precondition pq not null and id/priority/par are not invalid values.)
 */
-void insertPQ(MinPQ pq, int id, double priority, int par);//precondition pq not null and id/priority/par are not invalid values.
+void insertPQ(MinPQ pq, int id, double priority, int par);
 
-/** decreaseKey (what are the preconditions and/or postconditions? Replace this question with your comment.)
+/** decreaseKey (//precondition pq not null and id/priority/par not invalid values.)
 */
-void decreaseKey(MinPQ pq, int id, double priority, int par);//precondition pq not null and id/priority/par not invalid values.
+void decreaseKey(MinPQ pq, int id, double priority, int par);
 
 
 /* ***************** Constructors */
 
-/** createPQ (what are the preconditions and/or postconditions? Replace this question with your comment.)
+/** createPQ (//precondition pq not null and id/priority/par not invalid values.)
 */
-MinPQ createPQ(int n, int status[], double priority[], int parent[]);//precondition pq not null and id/priority/par not invalid values.
+MinPQ createPQ(int n, int status[], double priority[], int parent[]);
 
 
 #endif

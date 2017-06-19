@@ -1,14 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "adjWgtVec.h"
-#include "loadWgtGraph.h"
 /*
 loadWgtGraph.c
 Ben Donn
 bdonn
 pa4
 */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "adjWgtVec.h"
+#include "loadWgtGraph.h"
+
 int globalEdgeCount = 0;
 
 
@@ -52,7 +53,7 @@ AdjWgtVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 	int *tempInt = 0, *dataValue = 0, equal = 0;
 	float* weight = calloc(1, sizeof(float));
 	AdjWgtVec *tempList = NULL;
-	char *lineOfFile, *tempToken;
+	char *lineOfFile;
 	AdjWgt tempWgt, tempWgt2;
 	//begin the calloc's-------------------------------------------------
 	lineOfFile = calloc(30, sizeof(char));

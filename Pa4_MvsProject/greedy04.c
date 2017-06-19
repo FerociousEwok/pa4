@@ -2,9 +2,7 @@
 greedy04.c
 Ben Donn
 bdonn
-pa3
-
-
+pa4
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,42 +12,50 @@ pa3
 #include "greedy04.h"
 #include "loadWgtGraph.h"
 int nodeCount = 0;
-/*
-void greedytree(AdjWgtVec *adjInfo, int n, int s, int *parent, double *priority)
+
+double calcPriority(AdjWgtVec myVec, char *flag, int parent, int i, MinPQ pq)
 {
-
+	if (!strcmp(flag, "-P"))//if primms algorithm
+	{
+		AdjWgt weightInfo = adjWgtData(myVec, i);
+		double newWgt = weightInfo.wgt;
+		return newWgt;
+	}
+	else //if dijkstras.
+	{
+		double myDist = getPriority(pq, parent);
+		AdjWgt weightInfo = adjWgtData(myVec, i);
+		double newDist = myDist + weightInfo.wgt;
+		return newDist;
+	}
 }
-
-double calcPriority()
-{
-
-}
-*/
-int updateFringePrim(MinPQ pq, AdjWgtVec myVec, int v)
+int updateFringe(MinPQ pq, AdjWgtVec myVec, int v, char *flag)
 {
 	for (int i = 0; i < adjWgtSize(myVec); i++)//while more edges
 	{
+		/*
 		AdjWgt weightInfo = adjWgtData(myVec, i);
 		int w = weightInfo.to;
 		double newWgt = weightInfo.wgt;
+		*/
+		int w = adjWgtData(myVec, i).to;
 
 		if (getStatus(pq, w) == UNSEEN)
 		{
-			insertPQ(pq, w, newWgt, v);
+			insertPQ(pq, w, calcPriority(myVec, flag, v, i, pq), v);
 		}
 		else
 		{
 			if (getStatus(pq, w) == FRINGE)
-				if (newWgt < getPriority(pq, w))
-					decreaseKey(pq, w, newWgt, v);
+				if (calcPriority(myVec, flag, v, i, pq) < getPriority(pq, w))
+					decreaseKey(pq, w, calcPriority(myVec, flag, v, i, pq), v);
 		}
 	}
 	return EXIT_SUCCESS;
 }
-
-MinPQ primMST(AdjWgtVec *adjInfo, int n, int s, int *parent, double *priority)
+MinPQ greedytree(AdjWgtVec *adjInfo, int n, int s, int *parent, double *priority, char *flag)
 {
-	int *status = calloc(n + 1, sizeof(int));
+    int *status = calloc(n + 1, sizeof(int));
 	MinPQ pq = createPQ(n, status, priority, parent);
 
 	insertPQ(pq, s, 0, -1);
@@ -57,43 +63,12 @@ MinPQ primMST(AdjWgtVec *adjInfo, int n, int s, int *parent, double *priority)
 	{
 		int v = getMin(pq);
 		delMin(pq);
-		updateFringePrim(pq, adjInfo[v], v);
+		updateFringe(pq, adjInfo[v], v, flag);
 	}
 	return pq;
 }
 
-int updateFringeDijkstras(MinPQ pq, AdjWgtVec myVec, int v)
-{
-	double myDist = getPriority(pq, v);
-	for (int i = 0; i < adjWgtSize(myVec); i++)
-	{
-		AdjWgt weightInfo = adjWgtData(myVec, i);
-		int w = weightInfo.to;
-		double newDist = myDist + weightInfo.wgt;
-		
-		
-		if (getStatus(pq, w) == UNSEEN)
-			insertPQ(pq, w, weightInfo.wgt, v);
-		else if (getStatus(pq, w) == FRINGE)
-			if (newDist < getPriority(pq, w))
-				decreaseKey(pq, w, weightInfo.wgt, v);//here?
-	}
-	return EXIT_SUCCESS;
-}
 
-MinPQ dijkstraSSSP(AdjWgtVec *adjInfo, int n, int s, int *parent, double *priority)
-{
-	int *status = calloc(n + 1, sizeof(int));
-	MinPQ pq = createPQ(n, status, priority, parent);
-	insertPQ(pq, s, 0, -1);
-	while (!isEmptyPQ(pq))
-	{
-		int v = getMin(pq);
-		delMin(pq);
-		updateFringeDijkstras(pq, adjInfo[v], v);
-	}
-	return pq;
-}
 
 int main(int argc, char **argv)
 {
@@ -107,6 +82,7 @@ int main(int argc, char **argv)
 	double *priority;
 	//Cmd Line: ./greedy04 [-P or -D]  [start vertex]  "filename"
 	userInput = calloc(30, sizeof(char));
+	//Handle cmd input below--
 	if (argc != 4) //no command line argument
 	{
 		fprintf(stderr, "Error: no command line arguments.\nPress any key to close: ");
@@ -141,24 +117,17 @@ int main(int argc, char **argv)
 		getc(stdin);
 		exit(EXIT_FAILURE);
 	}
+	//End of cmd input.---
 	adjList = loadGraph(inputFile, nodeCount, flag);
 	printAdjVerts(adjList, nodeCount);
 
-	//Now check with algorithm they want and perform it.
+	
 	parent = calloc(nodeCount+1, sizeof(int));
 	priority = calloc(nodeCount+1, sizeof(double));
-
-	if (!strcmp(flag, "-P"))//if primm's algorithm.
-	{
-		fprintf(stdout, "\n\nPerforming Primm's Algorithm:\n\n");
-		resultPQ = primMST(adjList, nodeCount, startVertex, parent, priority);
-	}
-	else //if dijkstra's algorithm.
-	{
-		fprintf(stdout, "\n\nPerforming dijkstra's Algorithm:\n\n");
-		resultPQ = dijkstraSSSP(adjList, nodeCount, startVertex, parent, priority);
-	}
-
+	//perform algorithm and return result.
+	resultPQ = greedytree(adjList, nodeCount, startVertex, parent, priority, flag);
+	
+	//Print out MinPQ data structure.
 	fprintf(stdout, "Starting Vertex == %d\n\n          ", startVertex);
 	for (int i = 1; i <= nodeCount; i++)
 	{
@@ -167,9 +136,9 @@ int main(int argc, char **argv)
 	fprintf(stdout, "\n           ");
 	for (int i = 0; i <= nodeCount*5; i++)
 	{
-		fprintf(stdout, "-", i);
+		fprintf(stdout, "-");
 	}
-	fprintf(stdout, "\nStatus:    ", startVertex);
+	fprintf(stdout, "\nStatus:    ");
 	for (int i = 1; i <= nodeCount; i++)
 	{
 		fprintf(stdout, "%c    ", getStatus(resultPQ, i));
@@ -185,7 +154,7 @@ int main(int argc, char **argv)
 		fprintf(stdout, "%.1f  ", getPriority(resultPQ, i));
 	}
 	fprintf(stdout, "\n");
-
+	//free calloc/malloc calls.
 	for (int i = 1; i <= nodeCount; i++)
 	{
 		free(adjList[i]);
@@ -196,7 +165,6 @@ int main(int argc, char **argv)
 	free(resultPQ->parent);
 	free(resultPQ->status);
 	free(resultPQ->priority);
-	//free(resultPQ);
 	printf("\nProgram completed, press any key to exit: ");
 	getc(stdin);
 	
